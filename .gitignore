@@ -1,0 +1,52 @@
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.tmp
+.swp
+
+# SASS               #
+######################
+*.sass-cache
+*.scssc
+
+# Sublime Text       #
+######################
+*.sublime-project
+*.sublime-workspace
+sftp-settings.json
+sftp-config.json
+sftp-config-alt.json
+
+# Node               #
+######################
+node_modules
+*.node
+
+# Boilerplate        #
+######################
+example-module.*
+
+

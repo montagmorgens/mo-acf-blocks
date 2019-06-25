@@ -1,0 +1,10 @@
+{
+  "config": {
+    "vendor-dir": "lib/vendor"
+  },
+  "require": {
+    "symfony/yaml": "^4.2"
+  },
+  "require-dev": {
+  }
+}
