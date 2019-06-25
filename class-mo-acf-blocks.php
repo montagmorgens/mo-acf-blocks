@@ -41,6 +41,7 @@ use Symfony\Component\Yaml\Exception\ParseException;
  * Plugin code.
  *
  * @var object|null $instance The plugin singleton.
+ * @var array $template_directories An array of directories containing blocks.
  */
 class Blocks {
 
@@ -48,6 +49,7 @@ class Blocks {
 
 	const PLUGIN_VERSION = '1.0.0';
 	protected static $instance = null;
+	private $template_directories;
 
 	/**
 	 * Gets a singelton instance of our plugin.
@@ -65,10 +67,16 @@ class Blocks {
 	 * Constructor.
 	 */
 	private function __construct() {
+
+		// Bail if dependency plugins are missing.
 		if ( ! $this->check_dependencies() ) {
 			return;
 		}
 
+		// Set template directory.
+		$this->template_directories = apply_filters( 'mo_acf_blocks_directories', [ 'views/blocks' ] );
+
+		// Add action and filter hooks.
 		add_action( 'acf/init', array( $this, 'register_acf_blocks' ) );
 		add_action( 'admin_menu', array( $this, 'add_block_page' ) );
 		add_filter( 'block_categories', array( $this, 'register_acf_block_category' ), 1, 2 );
@@ -116,10 +124,15 @@ class Blocks {
 	 */
 	public function register_acf_blocks() {
 
-		// An array of directories containing blocks.
-		$directories = [ 'views/blocks' ];
+		// Check if template_directories is an array.
+		if ( ! is_array( $this->template_directories ) ) {
+			$return = new \WP_Error( 'mo_acf_blocks', __( 'Der Filter mo_acf_blocks_directories muss ein Array zurückgeben.', 'mo-acf-blocks' ) );
+			$this->admin_error_message( $return->get_error_message() );
+			return;
+		}
 
-		foreach ( $directories as $directory ) {
+		// Search for block definitions in all valid directories.
+		foreach ( $this->template_directories as $directory ) {
 			if ( empty( \locate_template( $directory ) ) ) {
 				return;
 			}
