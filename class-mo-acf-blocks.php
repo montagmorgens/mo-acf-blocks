@@ -35,7 +35,7 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
 // Init plugin instance.
-\add_action( 'plugins_loaded', array( '\Mo\Acf\Blocks', 'get_instance' ) );
+\add_action( 'plugins_loaded', [ '\Mo\Acf\Blocks', 'get_instance' ] );
 
 /**
  * Plugin code.
@@ -77,9 +77,9 @@ class Blocks {
 		$this->template_directories = apply_filters( 'mo_acf_blocks_directories', [ 'views/blocks' ] );
 
 		// Add action and filter hooks.
-		add_action( 'acf/init', array( $this, 'register_acf_blocks' ) );
-		add_action( 'admin_menu', array( $this, 'add_block_page' ) );
-		add_filter( 'block_categories', array( $this, 'register_acf_block_category' ), 1, 2 );
+		add_action( 'acf/init', [ $this, 'register_acf_blocks' ] );
+		add_action( 'admin_menu', [ $this, 'add_block_page' ] );
+		add_filter( 'block_categories', [ $this, 'register_acf_block_category' ], 1, 2 );
 	}
 
 	/**
@@ -163,7 +163,7 @@ class Blocks {
 						$block_config['name'] = $template->getBasename( '.yml' );
 
 						// Add same render callback for all blocks.
-						$block_config['render_callback'] = array( $this, 'render_acf_block' );
+						$block_config['render_callback'] = [ $this, 'render_acf_block' ];
 
 						// Register the block.
 						\acf_register_block_type( $block_config );
@@ -220,7 +220,7 @@ class Blocks {
 			__( 'Theme Blocks', 'mo-acf-blocks' ),
 			'manage_options',
 			'mo-theme-blocks',
-			array( $this, 'list_block_page' )
+			[ $this, 'list_block_page' ]
 		);
 	}
 
