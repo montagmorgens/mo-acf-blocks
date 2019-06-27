@@ -50,6 +50,7 @@ class Blocks {
 	const PLUGIN_VERSION = '1.0.0';
 	protected static $instance = null;
 	private $template_directories;
+	private $rendered_blocks = [];
 
 	/**
 	 * Gets a singelton instance of our plugin.
@@ -120,7 +121,26 @@ class Blocks {
 	}
 
 	/**
-	 *  Register ACF blocks by YAML config files in 'views/blocks'
+	 *  Register ACF blocks by YAML config files in 'views/blocks'.
+	 *
+	 * The YAML file follow the pattern:
+	 * ***************************************************************************
+	 * title: 'The Block Name'
+	 * category: 'theme'
+	 * mode: 'edit'
+	 * align: 'full'
+	 * attach_style: 'block-xyz'
+	 * keywords: ['xyz']
+	 * supports:
+	 *   align: false
+	 *   mode: true
+	 * icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"></svg>'
+	 * ***************************************************************************
+	 * The file name (without the `.yml` extension) will be used as internal block name.
+	 *
+	 * A twig template with the same file name (but with `.twig` extension,
+	 * obviously) will be automatically called by the render_callback of the
+	 * ACF block.
 	 */
 	public function register_acf_blocks() {
 
@@ -144,6 +164,7 @@ class Blocks {
 				if ( ! $template->isDot() && ! $template->isDir() && $template->getExtension() === 'yml' ) {
 					try {
 						$block_config = Yaml::parseFile( $template->getPathname() );
+						$block_style = null;
 
 						// Break if title is missing.
 						if ( empty( $block_config['title'] ) ) {
@@ -202,6 +223,12 @@ class Blocks {
 		$context['name']       = substr( $block['name'], 4 ); // Strip 'acf/' from block name.
 		$context['data']       = \get_fields();
 		$context['is_preview'] = $is_preview;
+
+		// Make sure stylsheet is only attached once per block.
+		if ( empty( $this->rendered_blocks[ $block['name'] ] ) ) {
+			$context['stylesheet'] = $block['attach_style'];
+			$this->rendered_blocks[ $block['name'] ] = true;
+		}
 
 		// Render the block.
 		\Timber::render( 'blocks/' . $context['name'] . '.twig', $context );
