@@ -54,7 +54,7 @@ trait Helpers {
 			\add_action(
 				'admin_notices',
 				function() use ( $message, $title, $type ) {
-					if ( ! defined( 'WP_ENV' ) || WP_ENV !== 'development' || ! is_string( $message ) || ! is_string( $type ) ) {
+					if ( ! is_string( $message ) || ! is_string( $type ) ) {
 						return;
 					}
 					printf( '<div class="notice notice-%s">', esc_attr( $type ) );
