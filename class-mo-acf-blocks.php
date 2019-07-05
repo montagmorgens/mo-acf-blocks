@@ -43,7 +43,7 @@ use Symfony\Component\Yaml\Exception\ParseException;
  * @var object|null $instance The plugin singleton.
  * @var array $template_directories An array of directories containing blocks.
  */
-class Blocks {
+final class Blocks {
 
 	use Helpers;
 
