@@ -14,6 +14,7 @@
  * Author URI:  https://www.montagmorgens.com/
  * License:     GNU General Public License v.2
  * Text Domain: mo-acf-blocks
+ * GitHub Plugin URI: montagmorgens/mo-acf-blocks
  */
 
 namespace Mo\Acf;
