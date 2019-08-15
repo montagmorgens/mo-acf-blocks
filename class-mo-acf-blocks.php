@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name: MONTAGMORGENS ACF Blocks
  * Description: Dieses Plugin stellt eine YAML-basierte ACF-Block-API für MONTAGMORGENS-Themes zur Verfügung.
- * Version:     1.0.1
+ * Version:     1.0.2
  * Author:      MONTAGMORGENS GmbH
  * Author URI:  https://www.montagmorgens.com/
  * License:     GNU General Public License v.2
@@ -48,7 +48,7 @@ final class Blocks {
 
 	use Helpers;
 
-	const PLUGIN_VERSION = '1.0.0';
+	const PLUGIN_VERSION = '1.0.2';
 	protected static $instance = null;
 	private $template_directories;
 	private $rendered_blocks = [];
@@ -226,8 +226,8 @@ final class Blocks {
 		$context['is_preview'] = $is_preview;
 
 		// Make sure stylsheet is only attached once per block.
-		if ( empty( $this->rendered_blocks[ $block['name'] ] ) ) {
-			$context['stylesheet'] = $block['attach_style'];
+		if ( array_key_exists( 'attach_style', $block ) && empty( $this->rendered_blocks[ $block['name'] ] ) ) {
+			$context['stylesheet'] = (string) $block['attach_style'];
 			$this->rendered_blocks[ $block['name'] ] = true;
 		}
 
