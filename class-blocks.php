@@ -2,9 +2,11 @@
 /**
  * ACF Blocks
  *
- * @package     Acf_Blocks
- * @author      MONTAGMORGENS GmbH
- * @copyright   2019 MONTAGMORGENS GmbH
+ * @category   Plugin
+ * @package    Mo\Acf
+ * @author     Christoph Schüßler <schuessler@montagmorgens.com>
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GNU/GPLv2
+ * @since      1.0.0
  *
  * @wordpress-plugin
  * Plugin Name: MONTAGMORGENS ACF Blocks
@@ -26,10 +28,10 @@ defined( 'ABSPATH' ) || die();
 define( 'Mo\Acf\PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 // Require composer autoloader.
-require_once( \Mo\Acf\PLUGIN_PATH . 'lib/vendor/autoload.php' );
+require_once \Mo\Acf\PLUGIN_PATH . 'lib/vendor/autoload.php';
 
 // Require helper functions.
-require_once( \Mo\Acf\PLUGIN_PATH . 'lib/functions/helpers.php' );
+require_once \Mo\Acf\PLUGIN_PATH . 'lib/functions/helpers.php';
 
 // Autoload dependencies.
 use Symfony\Component\Yaml\Yaml;
@@ -40,23 +42,38 @@ use Symfony\Component\Yaml\Exception\ParseException;
 
 /**
  * Plugin code.
- *
- * @var object|null $instance The plugin singleton.
- * @var array $template_directories An array of directories containing blocks.
  */
 final class Blocks {
 
 	use Helpers;
 
 	const PLUGIN_VERSION = '1.0.2';
+
+	/**
+	 * The plugin singleton.
+	 *
+	 * @var Blocks Class instance.
+	 */
 	protected static $instance = null;
+
+	/**
+	 * Template directories.
+	 *
+	 * @var array An array of directories containing blocks.
+	 */
 	private $template_directories;
+
+	/**
+	 * Rendered blocks.
+	 *
+	 * @var array An array of blocks that have are rendered in the current context.
+	 */
 	private $rendered_blocks = [];
 
 	/**
 	 * Gets a singelton instance of our plugin.
 	 *
-	 * @return Core_Functionality
+	 * @return Blocks
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$instance ) ) {
@@ -108,13 +125,16 @@ final class Blocks {
 
 	/**
 	 *  Register custom block category.
+	 *
+	 * @param array   $categories Array of block categories..
+	 * @param WP_Post $post Post being loaded.
 	 */
 	public function register_acf_block_category( $categories, $post ) {
 		return array_merge(
 			$categories,
 			[
 				[
-					'slug' => 'theme',
+					'slug'  => 'theme',
 					'title' => _x( 'Theme', 'Custom Block Category', 'mo-acf-blocks' ),
 				],
 			]
@@ -165,11 +185,12 @@ final class Blocks {
 				if ( ! $template->isDot() && ! $template->isDir() && $template->getExtension() === 'yml' ) {
 					try {
 						$block_config = Yaml::parseFile( $template->getPathname() );
-						$block_style = null;
+						$block_style  = null;
 
 						// Break if title is missing.
 						if ( empty( $block_config['title'] ) ) {
 							$this->admin_error_message(
+								/* translators: %1$s: folder name, %2$s: block name */
 								sprintf( __( 'In der Block-Konfiguration <strong>%1$s/%2$s</strong> fehlt der Titel (<code>title</code>).', 'mo-acf-blocks' ), $directory, $template->getBasename() ),
 								__( 'Theme: Block-Konfiguration', 'mo-acf-blocks' )
 							);
@@ -193,6 +214,7 @@ final class Blocks {
 						// Warn if correspondent twig template is missing.
 						if ( ! file_exists( $template->getPath() . '/' . $template->getBasename( '.yml' ) . '.twig' ) ) {
 							$this->admin_warning_message(
+								/* translators: %1$s: folder name, %2$s: block name */
 								sprintf( __( 'Das Block-Template <strong>%1$s/%2$s.twig</strong> fehlt.', 'mo-acf-blocks' ), $directory, $template->getBasename( '.yml' ) ),
 								__( 'Theme: Block template', 'mo-acf-blocks' )
 							);
@@ -200,6 +222,7 @@ final class Blocks {
 					} catch ( ParseException $exception ) {
 						// Show error message for YAML errors.
 						$this->admin_error_message(
+							/* translators: %1$s: folder name, %2$s: block name */
 							sprintf( __( 'Fehler beim Parsen von <strong>%1$s/%2$s</strong>:<br><code>%3$s</code>', 'mo-acf-blocks' ), $directory, $template->getBasename(), $exception->getMessage() ),
 							__( 'Theme: Block-Konfiguration', 'mo-acf-blocks' )
 						);
@@ -225,9 +248,9 @@ final class Blocks {
 		$context['data']       = \get_fields();
 		$context['is_preview'] = $is_preview;
 
-		// Make sure stylsheet is only attached once per block.
+		// Make sure stylesheet is only attached once per block.
 		if ( array_key_exists( 'attach_style', $block ) && empty( $this->rendered_blocks[ $block['name'] ] ) ) {
-			$context['stylesheet'] = (string) $block['attach_style'];
+			$context['stylesheet']                   = (string) $block['attach_style'];
 			$this->rendered_blocks[ $block['name'] ] = true;
 		}
 
@@ -236,7 +259,7 @@ final class Blocks {
 	}
 
 	/**
-	 * Add dahsboard page that displays all acitve ACF blocks.
+	 * Add dahsboard page that displays all active ACF blocks.
 	 */
 	public function add_block_page() {
 		// Check user capabilities.
@@ -261,11 +284,12 @@ final class Blocks {
 			return;
 		}
 
-		$data['title'] = esc_html( get_admin_page_title() );
+		$data['title']       = esc_html( get_admin_page_title() );
 		$data['block_types'] = \WP_Block_Type_Registry::get_instance()->get_all_registered();
 
 		sort( $data['block_types'] );
 
+		// phpcs:disable
 		echo \Timber::compile_string(
 			'
 			<div class="wrap">
@@ -284,5 +308,6 @@ final class Blocks {
 			',
 			$data
 		);
+		// phpcs:enable
 	}
 }

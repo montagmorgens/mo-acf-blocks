@@ -32,14 +32,6 @@ Thumbs.db
 *.sass-cache
 *.scssc
 
-# Sublime Text       #
-######################
-*.sublime-project
-*.sublime-workspace
-sftp-settings.json
-sftp-config.json
-sftp-config-alt.json
-
 # Node               #
 ######################
 node_modules
@@ -49,9 +41,3 @@ node_modules
 ######################
 *.code-workspace
 .vscode/sftp.json
-
-# Boilerplate        #
-######################
-example-module.*
-
-

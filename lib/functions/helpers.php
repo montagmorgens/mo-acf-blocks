@@ -2,9 +2,11 @@
 /**
  * ACF Blocks Helper Functions
  *
- * @package     Acf_Blocks
- * @author      MONTAGMORGENS GmbH
- * @copyright   2019 MONTAGMORGENS GmbH
+ * @category   Plugin
+ * @package    Mo\Acf
+ * @author     Christoph Schüßler <schuessler@montagmorgens.com>
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GNU/GPLv2
+ * @since      1.0.0
  */
 
 namespace Mo\Acf;
@@ -15,11 +17,13 @@ trait Helpers {
 	 * Prints debug data. If called from the WP Admin, output will be printed to
 	 * admin_notices.
 	 *
-	 * @var mixed $var The variable to be inspected.
+	 * @param mixed $var The variable to be inspected.
 	 */
 	public function debug( $var ) {
 		ob_start();
+		// phpcs:disable
 		var_dump( $var );
+		// phpcs:enable
 		$result = ob_get_clean();
 
 		if ( \is_admin() ) {
@@ -45,9 +49,9 @@ trait Helpers {
 	/**
 	 * Prints message to WP Admin.
 	 *
-	 * @var string $message The message to print.
-	 * @var string|false $title The message title.
-	 * @var string|null $type The message type (error, warning or success).
+	 * @param string       $message The message to print.
+	 * @param string|false $title The message title.
+	 * @param string|null  $type The message type (error, warning or success).
 	 */
 	public function admin_message( $message, $title = false, $type = 'info' ) {
 		if ( \is_admin() ) {
@@ -72,8 +76,8 @@ trait Helpers {
 	/**
 	 * Prints error message to WP Admin.
 	 *
-	 * @var string $message The message to print.
-	 * @var string|false $title The message title.
+	 * @param string       $message The message to print.
+	 * @param string|false $title The message title.
 	 */
 	public function admin_error_message( $message, $title = false ) {
 		$this->admin_message( $message, $title, $type = 'error' );
@@ -82,8 +86,8 @@ trait Helpers {
 	/**
 	 * Prints warning message to WP Admin.
 	 *
-	 * @var string $message The message to print.
-	 * @var string|false $title The message title.
+	 * @param string       $message The message to print.
+	 * @param string|false $title The message title.
 	 */
 	public function admin_warning_message( $message, $title = false ) {
 		$this->admin_message( $message, $title, $type = 'warning' );
@@ -92,8 +96,8 @@ trait Helpers {
 	/**
 	 * Prints success message to WP Admin.
 	 *
-	 * @var string $message The message to print.
-	 * @var string|false $title The message title.
+	 * @param string       $message The message to print.
+	 * @param string|false $title The message title.
 	 */
 	public function admin_success_message( $message, $title = false ) {
 		$this->admin_message( $message, $title, $type = 'success' );
