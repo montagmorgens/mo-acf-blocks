@@ -1,17 +1,17 @@
 [
     {
         "name": "symfony/polyfill-ctype",
-        "version": "v1.12.0",
-        "version_normalized": "1.12.0.0",
+        "version": "v1.13.1",
+        "version_normalized": "1.13.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-ctype.git",
-            "reference": "550ebaac289296ce228a706d0867afc34687e3f4"
+            "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/550ebaac289296ce228a706d0867afc34687e3f4",
-            "reference": "550ebaac289296ce228a706d0867afc34687e3f4",
+            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
+            "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
             "shasum": ""
         },
         "require": {
@@ -20,11 +20,11 @@
         "suggest": {
             "ext-ctype": "For best performance"
         },
-        "time": "2019-08-06T08:03:45+00:00",
+        "time": "2019-11-27T13:56:44+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.12-dev"
+                "dev-master": "1.13-dev"
             }
         },
         "installation-source": "dist",
@@ -61,17 +61,17 @@
     },
     {
         "name": "symfony/yaml",
-        "version": "v4.3.3",
-        "version_normalized": "4.3.3.0",
+        "version": "v4.4.2",
+        "version_normalized": "4.4.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/yaml.git",
-            "reference": "34d29c2acd1ad65688f58452fd48a46bd996d5a6"
+            "reference": "a08832b974dd5fafe3085a66d41fe4c84bb2628c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/yaml/zipball/34d29c2acd1ad65688f58452fd48a46bd996d5a6",
-            "reference": "34d29c2acd1ad65688f58452fd48a46bd996d5a6",
+            "url": "https://api.github.com/repos/symfony/yaml/zipball/a08832b974dd5fafe3085a66d41fe4c84bb2628c",
+            "reference": "a08832b974dd5fafe3085a66d41fe4c84bb2628c",
             "shasum": ""
         },
         "require": {
@@ -82,16 +82,16 @@
             "symfony/console": "<3.4"
         },
         "require-dev": {
-            "symfony/console": "~3.4|~4.0"
+            "symfony/console": "^3.4|^4.0|^5.0"
         },
         "suggest": {
             "symfony/console": "For validating YAML files using the lint command"
         },
-        "time": "2019-07-24T14:47:54+00:00",
+        "time": "2019-12-10T10:33:21+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "4.3-dev"
+                "dev-master": "4.4-dev"
             }
         },
         "installation-source": "dist",
