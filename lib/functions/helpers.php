@@ -66,7 +66,7 @@ trait Helpers {
 						printf( '<p><strong>%s</strong></p>', esc_html( $title ) );
 					}
 					echo '<p>';
-					echo \esc_html( $message );
+					echo \wp_kses_post( $message );
 					echo '</p></div>';
 				}
 			);
