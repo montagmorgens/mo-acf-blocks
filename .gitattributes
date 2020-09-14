@@ -9,3 +9,4 @@ packages.json export-ignore
 /gulpfile.js export-ignore
 /node_modules export-ignore
 /src export-ignore
+/.vscode export-ignore
