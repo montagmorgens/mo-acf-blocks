@@ -241,12 +241,22 @@ final class Blocks {
 	 */
 	public function render_acf_block( $block, $content = '', $is_preview = false ) {
 
+		$data = \get_fields(); // Get ACF field data.
+		$name = substr( $block['name'], 4 ); // Strip 'acf/' from block name.
+
 		// Store values in Timber context.
 		$context               = \Timber::context();
 		$context['block']      = $block;
-		$context['name']       = substr( $block['name'], 4 ); // Strip 'acf/' from block name.
-		$context['data']       = \get_fields();
+		$context['name']       = $name;
 		$context['is_preview'] = $is_preview;
+
+		// Apply filter to all blocks.
+		$data = apply_filters( 'mo_acf_blocks/render_acf_block', $data, $block, $name );
+
+		// Apply filter to specific block.
+		$data = apply_filters( 'mo_acf_blocks/render_acf_block/' . $name, $data, $block );
+
+		$context['data'] = $data;
 
 		// Make sure stylesheet is only attached once per block.
 		if ( array_key_exists( 'attach_style', $block ) && empty( $this->rendered_blocks[ $block['name'] ] ) ) {
