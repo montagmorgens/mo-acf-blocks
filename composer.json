@@ -7,6 +7,6 @@
     "optimize-autoloader": true
   },
   "require": {
-    "symfony/yaml": "^4.2"
+    "symfony/yaml": "^5.1"
   }
 }
