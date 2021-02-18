@@ -11,7 +11,7 @@
  * @wordpress-plugin
  * Plugin Name: MONTAGMORGENS ACF Blocks
  * Description: Dieses Plugin stellt eine YAML-basierte ACF-Block-API für MONTAGMORGENS-Themes zur Verfügung.
- * Version:     1.1.5
+ * Version:     1.2.0
  * Author:      MONTAGMORGENS GmbH
  * Author URI:  https://www.montagmorgens.com/
  * License:     GNU General Public License v.2
@@ -47,7 +47,7 @@ final class Blocks {
 
 	use Helpers;
 
-	const PLUGIN_VERSION = '1.1.5';
+	const PLUGIN_VERSION = '1.2.0';
 
 	/**
 	 * The plugin singleton.
@@ -276,9 +276,10 @@ final class Blocks {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		add_dashboard_page(
-			__( 'Verfügbare Theme-Blocks', 'mo-acf-blocks' ),
-			__( 'Theme Blocks', 'mo-acf-blocks' ),
+		add_submenu_page(
+			'themes.php',
+			__( 'Verfügbare Theme-Blöcke', 'mo-acf-blocks' ),
+			__( 'Theme-Blöcke', 'mo-acf-blocks' ),
 			'manage_options',
 			'mo-theme-blocks',
 			[ $this, 'list_block_page' ]
@@ -294,22 +295,29 @@ final class Blocks {
 			return;
 		}
 
-		$data['title']       = esc_html( get_admin_page_title() );
-		$data['block_types'] = \WP_Block_Type_Registry::get_instance()->get_all_registered();
+		$data['title']  = esc_html( get_admin_page_title() );
+		$data['blocks'] = [];
+		$block_types    = \WP_Block_Type_Registry::get_instance()->get_all_registered();
 
-		sort( $data['block_types'] );
+		foreach ( $block_types as $block ) {
+			if ( substr( $block->name, 0, 4 ) === 'acf/' ) {
+				array_push( $data['blocks'], substr( $block->name, 4 ) );
+			}
+		}
+
+		sort( $data['blocks'] );
 
 		// phpcs:disable
 		echo \Timber::compile_string(
 			'
 			<div class="wrap">
 			<h1>{{ title }}</h1>
-			{% if block_types is not empty %}
+			{% if blocks is not empty %}
 			<div>
-			<h2>{{ __("Diese ACF-Blöcke stehen aktuell zur Verfügung:", "mo-acf-blocks") }}</h2>
-			{% for block in block_types if block.name|slice(0,4) == "acf/" %}
+			<h2>{{ __("Diese %s Blöcke stehen als Teil des Themes zur Verfügung:", "mo-acf-blocks")|format( blocks|length) }}</h2>
+			{% for block in blocks %}
 			<ul>
-			<li><code>{{ block.name|slice(4) }}</code></li>
+			<li><code>{{ block }}</code></li>
 			</ul>
 			{% endfor %}
 			{% endif %}
