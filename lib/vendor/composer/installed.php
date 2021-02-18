@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '55db26400a6b3fcc74baf129825b8c0b07df8548',
+    'reference' => '4769a7745ed7b11ab0854c92d338db1073b39d71',
     'name' => 'mo/acf-blocks',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '55db26400a6b3fcc74baf129825b8c0b07df8548',
+      'reference' => '4769a7745ed7b11ab0854c92d338db1073b39d71',
     ),
     'symfony/deprecation-contracts' => 
     array (
@@ -31,8 +31,8 @@
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.22.0',
-      'version' => '1.22.0.0',
+      'pretty_version' => 'v1.22.1',
+      'version' => '1.22.1.0',
       'aliases' => 
       array (
       ),
@@ -40,12 +40,12 @@
     ),
     'symfony/yaml' => 
     array (
-      'pretty_version' => 'v5.2.1',
-      'version' => '5.2.1.0',
+      'pretty_version' => 'v5.2.3',
+      'version' => '5.2.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '290ea5e03b8cf9b42c783163123f54441fb06939',
+      'reference' => '338cddc6d74929f6adf19ca5682ac4b8e109cdb0',
     ),
   ),
 );
