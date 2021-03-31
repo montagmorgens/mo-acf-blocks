@@ -11,7 +11,7 @@
  * @wordpress-plugin
  * Plugin Name: MONTAGMORGENS ACF Blocks
  * Description: Dieses Plugin stellt eine YAML-basierte ACF-Block-API für MONTAGMORGENS-Themes zur Verfügung.
- * Version:     1.2.0
+ * Version:     1.3.0
  * Author:      MONTAGMORGENS GmbH
  * Author URI:  https://www.montagmorgens.com/
  * License:     GNU General Public License v.2
@@ -47,7 +47,7 @@ final class Blocks {
 
 	use Helpers;
 
-	const PLUGIN_VERSION = '1.2.0';
+	const PLUGIN_VERSION = '1.3.0';
 
 	/**
 	 * The plugin singleton.
@@ -241,8 +241,9 @@ final class Blocks {
 	 */
 	public function render_acf_block( $block, $content = '', $is_preview = false ) {
 
-		$data = \get_fields(); // Get ACF field data.
-		$name = substr( $block['name'], 4 ); // Strip 'acf/' from block name.
+		$data             = \get_fields(); // Get ACF field data.
+		$name             = substr( $block['name'], 4 ); // Strip 'acf/' from block name.
+		$name_underscored = str_replace( '-', '_', $name ); // Convert hyphens to underscore.
 
 		// Store values in Timber context.
 		$context               = \Timber::context();
@@ -254,7 +255,16 @@ final class Blocks {
 		$data = apply_filters( 'mo_acf_blocks/render_acf_block', $data, $block, $name );
 
 		// Apply filter to specific block.
-		$data = apply_filters( 'mo_acf_blocks/render_acf_block/' . $name, $data, $block );
+		$data = apply_filters( 'mo_acf_blocks/render_acf_block/' . $name, $data, $block ); // @todo deprecate.
+		$data = apply_filters( 'mo_acf_blocks/render_acf_block/' . $name_underscored, $data, $block );
+
+		// Apply filter for preview data.
+		if ( $is_preview ) {
+			$preview_data            = [];
+			$preview_data            = apply_filters( 'mo_acf_blocks/render_acf_block_preview/' . $name, $preview_data, $data, $block ); // @todo deprecate.
+			$preview_data            = apply_filters( 'mo_acf_blocks/render_acf_block_preview/' . $name_underscored, $preview_data, $data, $block );
+			$context['preview_data'] = $preview_data;
+		}
 
 		$context['data'] = $data;
 
