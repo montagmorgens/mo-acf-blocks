@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '4769a7745ed7b11ab0854c92d338db1073b39d71',
+    'reference' => '50db2317d2a04125bbd30d10336bf6cc41af43af',
     'name' => 'mo/acf-blocks',
   ),
   'versions' => 
@@ -31,7 +31,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '4769a7745ed7b11ab0854c92d338db1073b39d71',
+      'reference' => '50db2317d2a04125bbd30d10336bf6cc41af43af',
     ),
     'symfony/deprecation-contracts' => 
     array (
@@ -53,12 +53,12 @@ private static $installed = array (
     ),
     'symfony/yaml' => 
     array (
-      'pretty_version' => 'v5.2.3',
-      'version' => '5.2.3.0',
+      'pretty_version' => 'v5.2.5',
+      'version' => '5.2.5.0',
       'aliases' => 
       array (
       ),
-      'reference' => '338cddc6d74929f6adf19ca5682ac4b8e109cdb0',
+      'reference' => '298a08ddda623485208506fcee08817807a251dd',
     ),
   ),
 );
