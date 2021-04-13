@@ -1,15 +1,18 @@
 === MONTAGMORGENS ACF Blocks ===
 Contributors: herrschuessler
 Requires at least: 5.0.0
-Tested up to: 5.7.,
+Tested up to: 5.7.0
 Requires PHP: 7.0.0
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Dieses Plugin stellt eine YAML-basierte ACF-Block-API für MONTAGMORGENS-Themes zur Verfügung.
 
 == Changelog ==
+
+= 1.3.2 =
+* Include `child/blocks` template location for child themes
 
 = 1.3.1 =
 * Add filter render_acf_block_preview for all blocks
@@ -62,14 +65,16 @@ The YAML files follow the pattern:
 ```yaml
 title: 'The Block Name'
 category: 'theme'
-mode: 'edit'
+icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"></svg>'
+mode: 'auto'
 align: 'full'
 attach_style: 'block-xyz'
 keywords: ['xyz']
 supports:
   align: false
   mode: true
-icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"></svg>'
+  customClassName: false
+  anchor: true
 ````
 
 The file name (without the `.yml` extension) will be used as internal block name.
@@ -78,7 +83,7 @@ A twig template with the same file name (but with `.twig` extension,
 obviously) will be automatically called by the render_callback of the
 ACF block.
 
-### Filter hooks
+### Filter hooks (Frontend)
 
 There are two filter hooks to filter the data object that gets passed to any twig view:
 
@@ -87,12 +92,27 @@ There are two filter hooks to filter the data object that gets passed to any twi
 apply_filters( 'mo_acf_blocks/render_acf_block', $data, $block, $name )
 ```
 
-#### Specific filter, applies only to (block name).
+#### Specific filter, applies only to {block_name}.
 ```php
-apply_filters( 'mo_acf_blocks/render_acf_block/(block name)', $data, $block )
+apply_filters( 'mo_acf_blocks/render_acf_block/{block_name}', $data, $block )
+```
+
+### Filter hooks (Backend)
+
+There are two filter hooks to filter the data object that gets passed to any block preview:
+
+#### General filter, applies to all blocks.
+```php
+apply_filters( 'mo_acf_blocks/render_acf_block_preview', $preview_data, $data, $block, $name )
+```
+
+#### Specific filter, applies only to {block_name}.
+```php
+apply_filters( 'mo_acf_blocks/render_acf_block_preview/{block_name}', $preview_data, $data, $block )
 ```
 
 #### Parameters
+* `$preview_data` *(Array)* An empty array.
 * `$data` *(Array)* An array of ACF field values.
 * `$block` *(Array)* The block settings and attributes.
 * `$name` *(String)* The block slug (same as twig view name).

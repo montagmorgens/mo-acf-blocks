@@ -11,7 +11,7 @@
  * @wordpress-plugin
  * Plugin Name: MONTAGMORGENS ACF Blocks
  * Description: Dieses Plugin stellt eine YAML-basierte ACF-Block-API für MONTAGMORGENS-Themes zur Verfügung.
- * Version:     1.3.1
+ * Version:     1.3.2
  * Author:      MONTAGMORGENS GmbH
  * Author URI:  https://www.montagmorgens.com/
  * License:     GNU General Public License v.2
@@ -47,7 +47,7 @@ final class Blocks {
 
 	use Helpers;
 
-	const PLUGIN_VERSION = '1.3.1';
+	const PLUGIN_VERSION = '1.3.2';
 
 	/**
 	 * The plugin singleton.
@@ -260,10 +260,10 @@ final class Blocks {
 
 		// Apply filter for preview data.
 		if ( $is_preview ) {
-			$preview_data            = [];
+			$preview_data = [];
 
 			// Apply filter to all blocks.
-			$preview_data            = apply_filters( 'mo_acf_blocks/render_acf_block_preview', $preview_data, $data, $block, $name  );
+			$preview_data = apply_filters( 'mo_acf_blocks/render_acf_block_preview', $preview_data, $data, $block, $name );
 
 			// Apply filter to specific block.
 			$preview_data            = apply_filters( 'mo_acf_blocks/render_acf_block_preview/' . $name, $preview_data, $data, $block ); // @todo deprecate.
@@ -279,8 +279,14 @@ final class Blocks {
 			$this->rendered_blocks[ $block['name'] ] = true;
 		}
 
+		// Define template locations.
+		$filenames = [
+			'child/blocks/' . $context['name'] . '.twig',
+			'blocks/' . $context['name'] . '.twig',
+		];
+
 		// Render the block.
-		\Timber::render( 'blocks/' . $context['name'] . '.twig', $context );
+		\Timber::render( $filenames, $context );
 	}
 
 	/**
