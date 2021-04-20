@@ -3,13 +3,16 @@ Contributors: herrschuessler
 Requires at least: 5.0.0
 Tested up to: 5.7.1
 Requires PHP: 7.0.0
-Stable tag: 1.3.3
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Dieses Plugin stellt eine YAML-basierte ACF-Block-API für MONTAGMORGENS-Themes zur Verfügung.
 
 == Changelog ==
+
+= 1.4.0 =
+* Add filter register_acf_block/{block_name}
 
 = 1.3.3 =
 * Run legacy render_acf_block_preview and render_acf_block filters without underscored names only if those names differ from underscored names.
@@ -86,7 +89,15 @@ A twig template with the same file name (but with `.twig` extension,
 obviously) will be automatically called by the render_callback of the
 ACF block.
 
-### Filter hooks (Frontend)
+### Block Registration Filter hook 
+
+To prevent the registration of a specific block under some conditions, hook into:
+
+```php
+apply_filters( 'mo_acf_blocks/register_acf_block/{block_name}', true )
+```
+
+### Data Filter hooks (Frontend)
 
 There are two filter hooks to filter the data object that gets passed to any twig view:
 
@@ -100,7 +111,12 @@ apply_filters( 'mo_acf_blocks/render_acf_block', $data, $block, $name )
 apply_filters( 'mo_acf_blocks/render_acf_block/{block_name}', $data, $block )
 ```
 
-### Filter hooks (Backend)
+#### Parameters
+* `$data` *(Array)* An array of ACF field values.
+* `$block` *(Array)* The block settings and attributes.
+* `$name` *(String)* The block slug (same as twig view name).
+
+### Data Filter hooks (Backend)
 
 There are two filter hooks to filter the data object that gets passed to any block preview:
 
@@ -113,7 +129,6 @@ apply_filters( 'mo_acf_blocks/render_acf_block_preview', $preview_data, $data, $
 ```php
 apply_filters( 'mo_acf_blocks/render_acf_block_preview/{block_name}', $preview_data, $data, $block )
 ```
-
 #### Parameters
 * `$preview_data` *(Array)* An empty array.
 * `$data` *(Array)* An array of ACF field values.
