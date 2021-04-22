@@ -11,7 +11,7 @@
  * @wordpress-plugin
  * Plugin Name: MONTAGMORGENS ACF Blocks
  * Description: Dieses Plugin stellt eine YAML-basierte ACF-Block-API für MONTAGMORGENS-Themes zur Verfügung.
- * Version:     1.4.0
+ * Version:     1.4.1
  * Author:      MONTAGMORGENS GmbH
  * Author URI:  https://www.montagmorgens.com/
  * License:     GNU General Public License v.2
@@ -47,7 +47,7 @@ final class Blocks {
 
 	use Helpers;
 
-	const PLUGIN_VERSION = '1.4.0';
+	const PLUGIN_VERSION = '1.4.1';
 
 	/**
 	 * The plugin singleton.
@@ -255,15 +255,6 @@ final class Blocks {
 		$context['name']       = $name;
 		$context['is_preview'] = $is_preview;
 
-		// Apply filter to all blocks.
-		$data = apply_filters( 'mo_acf_blocks/render_acf_block', $data, $block, $name );
-
-		// Apply filter to specific block.
-		if ( $name !== $name_underscored ) {
-			$data = apply_filters( 'mo_acf_blocks/render_acf_block/' . $name, $data, $block ); // @todo deprecate.
-		}
-		$data = apply_filters( 'mo_acf_blocks/render_acf_block/' . $name_underscored, $data, $block );
-
 		// Apply filter for preview data.
 		if ( $is_preview ) {
 			$preview_data = [];
@@ -278,6 +269,15 @@ final class Blocks {
 			$preview_data            = apply_filters( 'mo_acf_blocks/render_acf_block_preview/' . $name_underscored, $preview_data, $data, $block );
 			$context['preview_data'] = $preview_data;
 		}
+
+		// Apply filter to all blocks.
+		$data = apply_filters( 'mo_acf_blocks/render_acf_block', $data, $block, $name );
+
+		// Apply filter to specific block.
+		if ( $name !== $name_underscored ) {
+			$data = apply_filters( 'mo_acf_blocks/render_acf_block/' . $name, $data, $block ); // @todo deprecate.
+		}
+		$data = apply_filters( 'mo_acf_blocks/render_acf_block/' . $name_underscored, $data, $block );
 
 		$context['data'] = $data;
 

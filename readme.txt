@@ -2,14 +2,17 @@
 Contributors: herrschuessler
 Requires at least: 5.0.0
 Tested up to: 5.7.1
-Requires PHP: 7.0.0
-Stable tag: 1.4.0
+Requires PHP: 7.2.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Dieses Plugin stellt eine YAML-basierte ACF-Block-API für MONTAGMORGENS-Themes zur Verfügung.
 
 == Changelog ==
+
+= 1.4.1 =
+* Fix filter order
 
 = 1.4.0 =
 * Add filter register_acf_block/{block_name}
