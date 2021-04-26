@@ -11,7 +11,7 @@
  * @wordpress-plugin
  * Plugin Name: MONTAGMORGENS ACF Blocks
  * Description: Dieses Plugin stellt eine YAML-basierte ACF-Block-API für MONTAGMORGENS-Themes zur Verfügung.
- * Version:     1.4.1
+ * Version:     1.4.2
  * Author:      MONTAGMORGENS GmbH
  * Author URI:  https://www.montagmorgens.com/
  * License:     GNU General Public License v.2
@@ -47,7 +47,7 @@ final class Blocks {
 
 	use Helpers;
 
-	const PLUGIN_VERSION = '1.4.1';
+	const PLUGIN_VERSION = '1.4.2';
 
 	/**
 	 * The plugin singleton.
@@ -209,7 +209,13 @@ final class Blocks {
 						$block_config['render_callback'] = [ $this, 'render_acf_block' ];
 
 						// Apply filter that can prevent block registration.
-						$should_register = apply_filters( 'mo_acf_blocks/register_acf_block/' . $block_config['name'], true );
+						$name             = $block_config['name'];
+						$name_underscored = str_replace( '-', '_', $name ); // Convert hyphens to underscore.
+						$should_register  = true;
+						if ( $name !== $name_underscored ) {
+							$should_register = apply_filters( 'mo_acf_blocks/register_acf_block/' . $name, $should_register );
+						}
+						$should_register = apply_filters( 'mo_acf_blocks/register_acf_block/' . $name_underscored, $should_register );
 						if ( $should_register ) {
 							// Register the block.
 							\acf_register_block_type( $block_config );
