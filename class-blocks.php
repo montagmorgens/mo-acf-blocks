@@ -11,12 +11,14 @@
  * @wordpress-plugin
  * Plugin Name: MONTAGMORGENS ACF Blocks
  * Description: Dieses Plugin stellt eine YAML-basierte ACF-Block-API für MONTAGMORGENS-Themes zur Verfügung.
- * Version:     1.4.2
+ * Version:     1.5.0
  * Author:      MONTAGMORGENS GmbH
  * Author URI:  https://www.montagmorgens.com/
  * License:     GNU General Public License v.2
  * Text Domain: mo-acf-blocks
  * GitHub Plugin URI: montagmorgens/mo-acf-blocks
+ *
+ * @phpcs:disable WordPress.NamingConventions.ValidHookName
  */
 
 namespace Mo\Acf;
@@ -47,7 +49,7 @@ final class Blocks {
 
 	use Helpers;
 
-	const PLUGIN_VERSION = '1.4.2';
+	const PLUGIN_VERSION = '1.5.0';
 
 	/**
 	 * The plugin singleton.
@@ -208,6 +210,34 @@ final class Blocks {
 						// Add same render callback for all blocks.
 						$block_config['render_callback'] = [ $this, 'render_acf_block' ];
 
+						// Check if a .jpg exists at the same location as the .yml file.
+						$block_preview_image = \locate_template( $directory . '/' . $block_config['name'] . '.jpg' );
+
+						// Add preview image for block inserter preview panel.
+						if ( '' !== $block_preview_image ) {
+
+							// Convert file path to URL.
+							$block_preview_image = esc_url_raw(
+								str_replace(
+									wp_normalize_path( untrailingslashit( ABSPATH ) ),
+									site_url(),
+									wp_normalize_path( $block_preview_image )
+								)
+							);
+
+							// Add block inserter preview data.
+							$block_config['example'] = [
+								'attributes' => [
+									'mode' => 'preview',
+									'data' => [
+										'inserter_preview_data' => [
+											'image' => $block_preview_image,
+										],
+									],
+								],
+							];
+						}
+
 						// Apply filter that can prevent block registration.
 						$name             = $block_config['name'];
 						$name_underscored = str_replace( '-', '_', $name ); // Convert hyphens to underscore.
@@ -261,8 +291,9 @@ final class Blocks {
 		$context['name']       = $name;
 		$context['is_preview'] = $is_preview;
 
-		// Apply filter for preview data.
 		if ( $is_preview ) {
+
+			// Apply filter for block preview data.
 			$preview_data = [];
 
 			// Apply filter to all blocks.
@@ -274,6 +305,11 @@ final class Blocks {
 			}
 			$preview_data            = apply_filters( 'mo_acf_blocks/render_acf_block_preview/' . $name_underscored, $preview_data, $data, $block );
 			$context['preview_data'] = $preview_data;
+
+			// Add data for block inserter preview.
+			if ( ! empty( $_POST['query']['preview'] ) && isset( $context['block']['example']['attributes']['data']['inserter_preview_data'] ) ) { // phpcs:ignore
+				$context['inserter_preview_data'] = $context['block']['example']['attributes']['data']['inserter_preview_data'];
+			}
 		}
 
 		// Apply filter to all blocks.

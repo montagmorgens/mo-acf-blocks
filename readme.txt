@@ -3,13 +3,16 @@ Contributors: herrschuessler
 Requires at least: 5.0.0
 Tested up to: 5.7.1
 Requires PHP: 7.2.0
-Stable tag: 1.4.2
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Dieses Plugin stellt eine YAML-basierte ACF-Block-API für MONTAGMORGENS-Themes zur Verfügung.
 
 == Changelog ==
+
+= 1.5.0 =
+* Add preview image for block inserter preview panel
 
 = 1.4.2 =
 * Run legacy register_acf_block filter without underscored name if this name differs from underscored name.
@@ -94,6 +97,8 @@ The file name (without the `.yml` extension) will be used as internal block name
 A twig template with the same file name (but with `.twig` extension,
 obviously) will be automatically called by the render_callback of the
 ACF block.
+
+A jpg file with the same file name will be automatically used as block inserter preview image in the block editor.
 
 ### Block Registration Filter hook 
 
